@@ -1,6 +1,6 @@
 <template>
  <div class="Exercises">
-  <h1 class="text-h3 primary--text">Exercises</h1>
+  <h1 class="text-h3 primary--text">My Exercises</h1>
   <v-container fluid class="my-5">
     <div class="test">
       <v-tooltip top>
