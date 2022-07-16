@@ -25,7 +25,7 @@
           </v-col>  
           <v-col cols="12" md="3">
             <div class="primary--text ">Secondary Muscles</div>
-            <div class="primary--text text-h5 mt-3">{{exercise.secondary}}</div>
+            <div class="primary--text text-h5 mt-3">{{exercise.secondary.join(",")}}</div>
           </v-col>   
           <v-col cols="12" md="3">
             <v-tooltip top>
@@ -67,7 +67,7 @@
     components: {Popup},
     data(){
       return {
-        exercises: []
+        exercises: [],
           
       }
     },

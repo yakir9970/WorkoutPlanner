@@ -1,8 +1,8 @@
   <template>
-    <v-container class="ml-10">
+    <v-container class="container">
       <v-row no-gutters class="mr-14" >
         <v-col cols="12" md="6" class="pa-3" v-for="(workout,index) in workouts" :key="workout._id">
-          <v-card  class="success">
+          <v-card color="success">
             <v-btn absolute right depressed class="transparent white--text" :to="{name: 'Workout', params: {id:workout._id, index:index}}">
               <v-icon x-large class="mt-8 mr-10 primary--text">mdi-pencil</v-icon>
             </v-btn>
@@ -18,7 +18,7 @@
                 </v-card-title>
                 <v-card-text>
                   <p class="primary--text text-body-1 font-weight-bold">Primary Muscles: {{exercise.primary}}</p>
-                  <p class="primary--text text-body-1 font-weight-bold">Secondary Muscles: {{exercise.secondary}}</p>
+                  <p class="primary--text text-body-1 font-weight-bold">Secondary Muscles: {{exercise.secondary.join(",")}}</p>
                 </v-card-text>
                 </v-card>        
               </v-col>
@@ -51,3 +51,12 @@
       }     
     }
   </script>
+
+<style>
+.container {
+  position: absolute;
+  left: 200px;
+  top: 20px;
+}
+
+</style>
