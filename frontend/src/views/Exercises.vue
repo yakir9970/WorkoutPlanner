@@ -36,6 +36,22 @@
              </template>
               <span>Add Exercise To Current Workout</span>
             </v-tooltip>
+            <v-tooltip top>
+             <template v-slot:activator="{ on, attrs }">
+               <v-btn @click="deleteExercise(exercise._id)" v-bind="attrs" v-on="on" class="success" depressed>
+                <v-icon size="35" class="primary--text">mdi-delete</v-icon>
+               </v-btn>
+             </template>
+              <span>Delete Exercise</span>
+            </v-tooltip>
+            <v-tooltip top>
+             <template v-slot:activator="{ on, attrs }">
+               <v-btn v-bind="attrs" v-on="on" class="success" depressed>
+                <v-icon size="35" class="primary--text">mdi-pencil</v-icon>
+               </v-btn>
+             </template>
+              <span>Edit Exercise</span>
+            </v-tooltip>
           </v-col>      
       </v-row>
     </v-card>
@@ -54,6 +70,13 @@
         exercises: []
           
       }
+    },
+    methods: {
+      async deleteExercise(id){
+            const response = await API.deleteExercise(id)
+            this.$router.push({name: 'Exercises', params: {message: response.message}})
+            window.location.reload();
+        } 
     },
   async created(){
     this.exercises=await API.getAllExercises();

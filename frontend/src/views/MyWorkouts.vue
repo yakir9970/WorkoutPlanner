@@ -3,11 +3,11 @@
       <v-row no-gutters class="mr-14" >
         <v-col cols="12" md="6" class="pa-3" v-for="(workout,index) in workouts" :key="workout._id">
           <v-card  class="success">
-            <v-btn plain absolute right depressed class="transparent white--text" :to="{name: 'Workout', params: {id:workout._id, index:index}}">
+            <v-btn absolute right depressed class="transparent white--text" :to="{name: 'Workout', params: {id:workout._id, index:index}}">
               <v-icon x-large class="mt-8 mr-10 primary--text">mdi-pencil</v-icon>
             </v-btn>
-            <v-btn plain absolute right depressed class="transparent white--text" @click="deleteWorkout(workout._id)">
-              <v-icon x-large class="mt-8 mr-n7 primary--text">mdi-trash-can</v-icon>
+            <v-btn absolute right depressed class="transparent white--text" @click="deleteWorkout(workout._id)">
+              <v-icon x-large class="mt-8 mr-n7 primary--text">mdi-delete</v-icon>
             </v-btn>
             <v-card-title class="primary--text text-h3 font-weight-bold">Workout No. {{index+1}}</v-card-title>
             <v-row>
