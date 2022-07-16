@@ -30,7 +30,7 @@ const getExercise = async (req,res)=>{
 // POST new Exercise --NEED TO FIX
 const createExercise = async (req,res)=>{
     const exerciseBody = req.body;
-    console.log(exerciseBody.secondary,req.body);
+    console.log("hello",exerciseBody.secondary,req.body);
     //add doc to DB
     try {
         const exercise = await Exercise.create(exerciseBody);

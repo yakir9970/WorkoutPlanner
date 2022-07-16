@@ -11,7 +11,7 @@
         </template>
         <span>View Current Workout</span>
       </v-tooltip>
-      <v-btn class="mr-5 primary text-subtitle-1" height="40" width="135">Add Exercise</v-btn>
+        <Popup />
     </div>
     <v-card flat class="success pa-7 my-12 ml-15" v-for="exercise in exercises" :key="exercise.name">
       <v-row :class="`pa-3 workout`">
@@ -46,7 +46,9 @@
 
 <script>
  import API from "../exerciseAPI"
+ import Popup from "../components/Popup.vue"
   export default {
+    components: {Popup},
     data(){
       return {
         exercises: []

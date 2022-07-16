@@ -19,6 +19,12 @@ export default class API{
         const res=await axios.delete(`${url}/${id}`)
         return res.data
     }
+
+    //to insert post into database
+    static async addExercise(post){
+        const res=await axios.post(url,post)
+        return res.data
+    }
 }
     
 

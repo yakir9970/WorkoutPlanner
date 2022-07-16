@@ -19,6 +19,7 @@ export default class API{
         const res=await axios.delete(`${url}/${id}`)
         return res.data
     }
+
 }
     
 
