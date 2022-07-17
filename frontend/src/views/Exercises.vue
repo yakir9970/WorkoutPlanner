@@ -13,8 +13,8 @@
       </v-tooltip>
         <Popup />
     </div>
-    <v-card flat class="success pa-7 my-12 ml-15" v-for="exercise in exercises" :key="exercise._id">
-      <v-row :class="`pa-3 workout`">
+    <v-card elevation="10" max-width="1600" class="secondary pa-7 my-12 ml-15" v-for="exercise in exercises" :key="exercise._id">
+      <v-row :class="`pb-3 mr-n10 workout`">
           <v-col cols="12" md="3">
             <div class="primary--text ">Exercise Name</div>
             <div class="primary--text text-h5 mt-3">{{exercise.name}}</div>
@@ -27,10 +27,10 @@
             <div class="primary--text ">Secondary Muscles</div>
             <div class="primary--text text-h5 mt-3">{{exercise.secondary.join(",")}}</div>
           </v-col>   
-          <v-col cols="12" md="3">
+          <v-col class="mt-n4" align="right" cols="12" md="3">
             <v-tooltip top>
              <template v-slot:activator="{ on, attrs }">
-               <v-btn v-bind="attrs" v-on="on" class="success" depressed>
+               <v-btn v-bind="attrs" v-on="on" class="secondary" depressed>
                 <v-icon size="35" class="primary--text">mdi-plus-thick</v-icon>
                </v-btn>
              </template>
@@ -38,16 +38,17 @@
             </v-tooltip>
             <v-tooltip top>
              <template v-slot:activator="{ on, attrs }">
-               <v-btn @click="deleteExercise(exercise._id)" v-bind="attrs" v-on="on" class="success" depressed>
+               <v-btn @click="deleteExercise(exercise._id)" v-bind="attrs" v-on="on" class="secondary" depressed>
                 <v-icon size="35" class="primary--text">mdi-delete</v-icon>
                </v-btn>
              </template>
               <span>Delete Exercise</span>
             </v-tooltip>
             <EditPopup :exercise="exercise"/>  
-          </v-col>      
+          </v-col>   
       </v-row>
     </v-card>
+
   </v-container>
   
  </div>

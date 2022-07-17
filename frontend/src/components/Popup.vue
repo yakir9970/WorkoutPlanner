@@ -1,5 +1,5 @@
 <template>
-    <v-dialog persistent no-click-animation width="700px" v-model="dialog">
+    <v-dialog overlay-opacity="0.9" overlay-color="#dfe6ff" transition="dialog-bottom-transition" persistent no-click-animation width="700px" v-model="dialog">
         <template v-slot:activator="{ on, attrs}">
         <v-btn class="mr-5 primary text-subtitle-1" height="40" width="135" v-bind="attrs" v-on="on">add exercise</v-btn>
         </template>

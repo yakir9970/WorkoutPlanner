@@ -1,7 +1,7 @@
 <template>
-    <v-dialog persistent no-click-animation width="700px" v-model="dialog">
+    <v-dialog overlay-opacity="0.9" overlay-color="#dfe6ff" transition="dialog-bottom-transition" persistent no-click-animation width="700px" v-model="dialog">
         <template v-slot:activator="{ on, attrs}">
-        <v-btn depressed class="success" v-bind="attrs" v-on="on">
+        <v-btn depressed class="secondary" v-bind="attrs" v-on="on">
             <v-icon size="35" class="primary--text">mdi-pencil</v-icon>
         </v-btn>
         </template>

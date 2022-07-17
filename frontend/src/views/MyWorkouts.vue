@@ -2,7 +2,7 @@
     <v-container class="container">
       <v-row no-gutters class="mr-14" >
         <v-col cols="12" md="6" class="pa-3" v-for="(workout,index) in workouts" :key="workout._id">
-          <v-card color="success">
+          <v-card color="secondary">
             <v-btn absolute right depressed class="transparent white--text" :to="{name: 'Workout', params: {id:workout._id, index:index}}">
               <v-icon x-large class="mt-8 mr-10 primary--text">mdi-pencil</v-icon>
             </v-btn>
