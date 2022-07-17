@@ -44,14 +44,7 @@
              </template>
               <span>Delete Exercise</span>
             </v-tooltip>
-            <v-tooltip top>
-             <template v-slot:activator="{ on, attrs }">
-               <v-btn v-bind="attrs" v-on="on" class="success" depressed>
-                <v-icon size="35" class="primary--text">mdi-pencil</v-icon>
-               </v-btn>
-             </template>
-              <span>Edit Exercise</span>
-            </v-tooltip>
+            <EditPopup :exercise="exercise"/>  
           </v-col>      
       </v-row>
     </v-card>
@@ -63,12 +56,12 @@
 <script>
  import API from "../exerciseAPI"
  import Popup from "../components/Popup.vue"
+  import EditPopup from "../components/EditPopup.vue"
   export default {
-    components: {Popup},
+    components: {Popup,EditPopup},
     data(){
       return {
         exercises: [],
-          
       }
     },
     methods: {

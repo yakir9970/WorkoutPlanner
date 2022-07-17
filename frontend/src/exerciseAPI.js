@@ -25,6 +25,12 @@ export default class API{
         const res=await axios.post(url,post)
         return res.data
     }
+
+     //to update post into database
+     static async updateExercise(id,post){
+        const res=await axios.patch(`${url}/${id}`,post)
+        return res.data
+    }
 }
     
 
