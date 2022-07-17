@@ -13,7 +13,7 @@
       </v-tooltip>
         <Popup />
     </div>
-    <v-card flat class="success pa-7 my-12 ml-15" v-for="exercise in exercises" :key="exercise.name">
+    <v-card flat class="success pa-7 my-12 ml-15" v-for="exercise in exercises" :key="exercise._id">
       <v-row :class="`pa-3 workout`">
           <v-col cols="12" md="3">
             <div class="primary--text ">Exercise Name</div>
