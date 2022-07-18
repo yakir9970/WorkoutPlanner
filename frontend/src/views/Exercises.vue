@@ -5,8 +5,9 @@
     <div class="test">
       <v-tooltip top>
         <template v-slot:activator="{ on, attrs }">
-        <v-btn v-bind="attrs" v-on="on" class="transparent" depressed>
+        <v-btn :to="{name: 'ShowWorkout', params: {currentWorkout: currentWorkout}}" v-bind="attrs" v-on="on" class="transparent" depressed>
           <v-icon size="50" class="primary--text">mdi-archive-eye-outline</v-icon>
+          <h1 class="num">({{currentWorkout.length}})</h1>
         </v-btn>
         </template>
         <span>View Current Workout</span>
@@ -30,8 +31,8 @@
           <v-col class="mt-n4" align="right" cols="12" md="3">
             <v-tooltip top>
              <template v-slot:activator="{ on, attrs }">
-               <v-btn v-bind="attrs" v-on="on" class="secondary" depressed>
-                <v-icon size="35" class="primary--text">mdi-plus-thick</v-icon>
+               <v-btn @click="addExercise(exercise)" v-bind="attrs" v-on="on" class="secondary" depressed>
+                <v-icon size="35" class="primary--text">{{show? 'mdi-plus-thick': 'mdi-minus-thick'}}</v-icon>
                </v-btn>
              </template>
               <span>Add Exercise To Current Workout</span>
@@ -63,18 +64,26 @@
     data(){
       return {
         exercises: [],
+        show:true,
+        currentWorkout: [],
       }
     },
-    methods: {
+    methods: {    
       async deleteExercise(id){
             const response = await API.deleteExercise(id)
             this.$router.push({name: 'Exercises', params: {message: response.message}})
             window.location.reload();
-        } 
-    },
+        },
+        addExercise(exercise){
+          this.currentWorkout.push(exercise);
+          //this.show=!this.show;
+
+        },
+            },
   async created(){
     this.exercises=await API.getAllExercises();
-  }
+  },
+  
   }
 </script>
 
@@ -85,5 +94,8 @@
 .test {
   position: fixed;
   right: 400px;
+}
+.num{
+  color: #06283D;
 }
 </style>

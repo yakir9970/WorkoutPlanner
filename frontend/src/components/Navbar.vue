@@ -49,8 +49,8 @@ export default {
             drawer: true,
             links: [
                 {icon: 'mdi-home-outline', text: 'My Workouts', route:'/'},
-                {icon: 'mdi-eye-outline', text: 'Show Workout', route:'/Show-Workout'},
-                {icon: 'mdi-information-outline', text: 'Exercises', route:'/Exercises'},
+                //{icon: 'mdi-eye-outline', text: 'Show Workout', route:'/Show-Workout'},
+                {icon: 'mdi-information-outline', text: 'My Exercises', route:'/Exercises'},
             ]
         } 
     } 

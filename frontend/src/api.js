@@ -20,6 +20,11 @@ export default class API{
         return res.data
     }
 
+    //to insert post into database
+    static async addWorkout(post){
+        const res=await axios.post(url,post)
+        return res.data
+    }
 }
     
 

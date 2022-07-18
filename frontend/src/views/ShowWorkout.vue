@@ -1,44 +1,62 @@
-  <template>
-    <v-container class="ml-10">
-      <v-row no-gutters class="mr-14" >
-        <v-col cols="12" md="6" class="pa-3" v-for="(workout,index) in workouts" :key="workout._id">
-          <v-card flat class="accent">
-            <v-card-title class="white--text text-h2">Workout No. {{index+1}}</v-card-title>
-            <v-row>
-              <v-col cols="12" md="6" v-for="exercise in workout.exercises" :key="exercise._id">
-                <v-card flat class="accent">
-                  <v-btn absolute right depressed class="accent" :to="{name: 'Workout', params: {id:workout._id}}">
-                    <v-icon>mdi-open-in-new</v-icon>
-                  </v-btn>
-                <v-card-title class="white--text text-h4">
-                  {{exercise.name}}
-                </v-card-title>
-                <v-card-text>
-                  <p class="white--text text-body-1">Primary Muscles: {{exercise.primary}}</p>
-                  <p class="white--text text-body-1">Secondary Muscles: {{exercise.secondary}}</p>
-                </v-card-text>
+        <template>
+        <div class="ShowWorkouts">
+        <div class="test">  
+          <v-btn @click="addWorkout()" :disabled="disable" x-large class="mt-6 primary">Add Current Workout</v-btn>   
+        </div>
+        <v-container class="my-5">
+            <v-row >
+                <v-card width="700" elevation="10" max-width="1600" class="secondary mt-10">
+                    <v-col cols="12" v-for="(exercise,index) in workout" :key="exercise._id">
+                        <v-divider v-if="index>0" class="primary mt-n5 mb-3"></v-divider>
+                        <v-card-title class="primary--text text-h4 font-weight-bold">
+                            {{exercise.name}}
+                        </v-card-title>                        
+                        <v-card-text>
+                            <p class="primary--text text-h6 font-weight-bold">Primary Muscles: {{exercise.primary}}</p>
+                            <p class="primary--text text-h6 font-weight-bold">Secondary Muscles: {{exercise.secondary.join(",")}}</p>
+                        </v-card-text>
+                    </v-col>
                 </v-card>        
-              </v-col>
-            </v-row>                            
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </template>
+            </v-row>  
+        </v-container>
+        </div>
+        </template>
 
-  <script>
-  import API from "../api"
+        <script>
+          import API from '../api'
 
-    export default {
-      name: "ShowWorkout",
-      data(){
-        return{
-          workout: {}
+        export default {
+            data(){
+            return {
+                workout: [],
+            }
+            },
+             methods:{
+                async addWorkout(){
+                const response = await API.addWorkout(this.workout);
+                console.log(response);
+                this.$router.push({ name: "MyWorkouts", params: {message: response.message} })
+              },
+            },
+            computed: {
+              disable : ({ workout }) => workout.length === 0
+            },
+            
+            async created(){
+            this.workout = this.$route.params.currentWorkout;
+            }
         }
-      },              
-        async created(){
-          this.workouts = await API.getWorkoutByID(this.$route.params.id);
-        }      
-      
-    }
-  </script>
+        </script>
+
+        <style>
+        .v-card {
+            margin: 0 auto;
+        }
+         .test {
+            position: fixed;
+            right: 400px;
+        }
+        .v-divider {
+          border-width: 2px;
+        }
+        </style>
