@@ -5,9 +5,9 @@
     <div class="test">
       <v-tooltip top>
         <template v-slot:activator="{ on, attrs }">
-        <v-btn :to="{name: 'ShowWorkout', params: {currentWorkout: currentWorkout}}" v-bind="attrs" v-on="on" class="transparent" depressed>
+        <v-btn icon :disabled="disable" :to="{name: 'ShowWorkout', params: {currentWorkout: currentWorkout}}" v-bind="attrs" v-on="on" class="transparent mr-5" depressed>
           <v-icon size="50" class="primary--text">mdi-archive-eye-outline</v-icon>
-          <h1 class="num">({{currentWorkout.length}})</h1>
+          <h1 :class="changeColor(disable)">({{currentWorkout.length}})</h1>
         </v-btn>
         </template>
         <span>View Current Workout</span>
@@ -68,7 +68,15 @@
         currentWorkout: [],
       }
     },
-    methods: {    
+    methods: {   
+      changeColor(disable){
+        if(disable){
+          return "mr-7 ml-2";
+        }
+        else{
+          return "primary--text mr-7 ml-2";
+        }
+      }, 
       async deleteExercise(id){
             const response = await API.deleteExercise(id)
             this.$router.push({name: 'Exercises', params: {message: response.message}})
@@ -80,6 +88,9 @@
 
         },
             },
+    computed: {
+      disable : ({ currentWorkout }) => currentWorkout.length === 0
+    },
   async created(){
     this.exercises=await API.getAllExercises();
   },
@@ -87,7 +98,7 @@
   }
 </script>
 
-<style>
+<style scoped>
 .workout{
   border-left: 4px solid #47B5FF;
 }
@@ -95,7 +106,5 @@
   position: fixed;
   right: 400px;
 }
-.num{
-  color: #06283D;
-}
+
 </style>
