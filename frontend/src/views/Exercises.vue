@@ -87,7 +87,9 @@
             this.$refs.input[index].$el.childNodes[0].childNodes[3].childNodes[0].childNodes[0].childNodes[0].classList.replace("mdi-plus-thick","mdi-minus-thick");
           }
           else{
-            this.currentWorkout.splice(this.currentWorkout.length-2,1)
+            this.currentWorkout=this.currentWorkout.filter(function(obj){
+              return obj._id!==exercise._id;
+            });
             this.$refs.input[index].$el.childNodes[0].childNodes[3].childNodes[0].childNodes[0].childNodes[0].classList.replace("mdi-minus-thick","mdi-plus-thick");
           }
           
@@ -104,9 +106,6 @@
     const interval = setInterval(() => {
       if (this.$refs.input) {
         console.log(this.$refs.input[0].$el.childNodes[0].childNodes[3].childNodes[0].childNodes[0].childNodes[0].classList[4]);
-        // VueComponent{}
-        //console.log(this.$refs);
-        // {nav: VueComponent}
         clearInterval(interval);
       }
     }, 50)
