@@ -15,21 +15,44 @@
         <Popup />
     </div>
     <div class="sort">
-      <v-menu offset-y>
+      <v-menu :open-on-hover="true" offset-y rounded="lg" transition="slide-y-transition">
         <template v-slot:activator="{ on, attrs }">
-        <v-btn color="transparent primary--text font-weight-bold" depressed v-bind="attrs" v-on="on">Sort By</v-btn>
+        <v-btn color="transparent primary--text font-weight-bold" depressed v-bind="attrs" v-on="on">
+          <v-icon left>
+            mdi-sort-ascending
+          </v-icon>
+        Sort By</v-btn>
       </template>
         <v-list>
-          <v-list-item>Exercise Name</v-list-item>
-          <v-list-item>Primary Muscle</v-list-item>
+          <v-list-item @click="sortBy('name')" class="primary--text font-weight-bold">Exercise Name</v-list-item>
+          <v-list-item @click="sortBy('primary')" class="primary--text font-weight-bold">Primary Muscle</v-list-item>
         </v-list>
       </v-menu>
-      <v-menu offset-y>
+      <v-menu :close-on-content-click="false" :open-on-hover="true" offset-y rounded="lg" transition="slide-y-transition">
         <template v-slot:activator="{ on, attrs }">
-        <v-btn color="transparent primary--text font-weight-bold" depressed v-bind="attrs" v-on="on">Filter By</v-btn>
+        <v-btn color="transparent primary--text font-weight-bold" depressed v-bind="attrs" v-on="on">
+          <v-icon left>
+            mdi-filter
+          </v-icon>  
+        Filter By</v-btn>
       </template>
         <v-list>
-          <v-list-item>Primary Muscle</v-list-item>
+          <v-menu :open-on-hover="true" offset-x rounded="lg" transition="slide-x-transition">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn class="menu-primary" color="transparent primary--text font-weight-bold text-body-1" depressed v-bind="attrs" v-on="on">
+                Primary Muscle
+                 <v-icon right>
+                  mdi-menu-right
+                </v-icon>
+                </v-btn>
+            </template>
+            <v-list>
+              <v-list-item :filter="filterExercises" @click="filterBy('Biceps')">Biceps</v-list-item>
+              <v-list-item :filter="filterExercises" @click="filterBy('Triceps')">Triceps</v-list-item>
+              <v-list-item :filter="filterExercises" @click="filterBy('Upper Back')">Upper Back</v-list-item>
+              <v-list-item :filter="filterExercises" @click="filterBy('Upper Chest')">Upper Chest</v-list-item>
+            </v-list>
+          </v-menu>
           <v-list-item>Secondary Muscles</v-list-item>
         </v-list>
       </v-menu>
@@ -85,6 +108,8 @@
       return {
         exercises: [],
         currentWorkout: [],
+        event: "",
+        temp: [],
       }
     },
     methods: {   
@@ -96,6 +121,17 @@
           return "primary--text mr-7 ml-2";
         }
       }, 
+      sortBy(prop){
+          this.exercises.sort((a,b)=> a[prop].toLowerCase() < b[prop].toLowerCase() ? -1:1)
+      },
+      filterBy(event){
+        if(this.event==event){
+          this.event="";
+        }
+        else{
+          this.event=event;
+        }
+      },
       async deleteExercise(id){
             const response = await API.deleteExercise(id)
             this.$router.push({name: 'Exercises', params: {message: response.message}})
@@ -117,15 +153,26 @@
         },
             },
     computed: {
-      disable : ({ currentWorkout }) => currentWorkout.length === 0
+      disable : ({ currentWorkout }) => currentWorkout.length === 0,
+      filterExercises(){
+        this.exercises=this.temp;
+        if(this.event!=""&&this.event.toLowerCase()!='all'){
+          this.exercises= this.exercises.filter(({primary})=>primary.toLowerCase()==this.event.toLowerCase());
+        }
+        else{
+          this.exercises=this.temp;
+        }
+      },
     },
   async created(){
     this.exercises=await API.getAllExercises();
+    if(this.temp.length==0){
+      this.temp=this.exercises;
+    }
   },
     mounted() {
     const interval = setInterval(() => {
       if (this.$refs.input) {
-        console.log(this.$refs.input[0].$el.childNodes[0].childNodes[3].childNodes[0].childNodes[0].childNodes[0].classList[4]);
         clearInterval(interval);
       }
     }, 50)
@@ -148,5 +195,9 @@
   margin-bottom: -45px;
   left: 100px;
 }
+.menu-primary {
+  text-transform: capitalize;
+}
+
 
 </style>
