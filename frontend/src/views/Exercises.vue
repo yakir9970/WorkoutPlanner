@@ -14,6 +14,26 @@
       </v-tooltip>
         <Popup />
     </div>
+    <div class="sort">
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+        <v-btn color="transparent primary--text font-weight-bold" depressed v-bind="attrs" v-on="on">Sort By</v-btn>
+      </template>
+        <v-list>
+          <v-list-item>Exercise Name</v-list-item>
+          <v-list-item>Primary Muscle</v-list-item>
+        </v-list>
+      </v-menu>
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+        <v-btn color="transparent primary--text font-weight-bold" depressed v-bind="attrs" v-on="on">Filter By</v-btn>
+      </template>
+        <v-list>
+          <v-list-item>Primary Muscle</v-list-item>
+          <v-list-item>Secondary Muscles</v-list-item>
+        </v-list>
+      </v-menu>
+    </div>
     <v-card elevation="10" max-width="1600" class="secondary pa-7 my-12 ml-15" v-for="(exercise,index) in exercises" :key="exercise._id" ref="input">
       <v-row :class="`pb-3 mr-n10 workout`">
           <v-col cols="12" md="3">
@@ -121,6 +141,11 @@
 .test {
   position: fixed;
   right: 400px;
+}
+.sort {
+  position: fixed;
+  margin-top: 17px;
+  left: 300px;
 }
 
 </style>
