@@ -143,9 +143,10 @@
   right: 400px;
 }
 .sort {
-  position: fixed;
-  margin-top: 17px;
-  left: 300px;
+  position: relative;
+  margin-top: 30px;
+  margin-bottom: -45px;
+  left: 100px;
 }
 
 </style>
