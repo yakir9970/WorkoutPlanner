@@ -14,7 +14,7 @@
       </v-tooltip>
         <Popup />
     </div>
-    <v-card elevation="10" max-width="1600" class="secondary pa-7 my-12 ml-15" v-for="exercise in exercises" :key="exercise._id">
+    <v-card elevation="10" max-width="1600" class="secondary pa-7 my-12 ml-15" v-for="(exercise,index) in exercises" :key="exercise._id" ref="input">
       <v-row :class="`pb-3 mr-n10 workout`">
           <v-col cols="12" md="3">
             <div class="primary--text ">Exercise Name</div>
@@ -31,8 +31,8 @@
           <v-col class="mt-n4" align="right" cols="12" md="3">
             <v-tooltip top>
              <template v-slot:activator="{ on, attrs }">
-               <v-btn @click="addExercise(exercise)" v-bind="attrs" v-on="on" class="secondary" depressed>
-                <v-icon size="35" class="primary--text">{{show? 'mdi-plus-thick': 'mdi-minus-thick'}}</v-icon>
+               <v-btn @click="addExercise(exercise,index)" v-bind="attrs" v-on="on" class="secondary" depressed>
+                <v-icon size="35" class="primary--text">mdi-plus-thick</v-icon>
                </v-btn>
              </template>
               <span>Add Exercise To Current Workout</span>
@@ -64,7 +64,6 @@
     data(){
       return {
         exercises: [],
-        show:true,
         currentWorkout: [],
       }
     },
@@ -82,9 +81,16 @@
             this.$router.push({name: 'Exercises', params: {message: response.message}})
             window.location.reload();
         },
-        addExercise(exercise){
-          this.currentWorkout.push(exercise);
-          //this.show=!this.show;
+        addExercise(exercise,index){
+          if(this.$refs.input[index].$el.childNodes[0].childNodes[3].childNodes[0].childNodes[0].childNodes[0].classList[4]=="mdi-plus-thick"){
+            this.currentWorkout.push(exercise);
+            this.$refs.input[index].$el.childNodes[0].childNodes[3].childNodes[0].childNodes[0].childNodes[0].classList.replace("mdi-plus-thick","mdi-minus-thick");
+          }
+          else{
+            this.currentWorkout.splice(this.currentWorkout.length-2,1)
+            this.$refs.input[index].$el.childNodes[0].childNodes[3].childNodes[0].childNodes[0].childNodes[0].classList.replace("mdi-minus-thick","mdi-plus-thick");
+          }
+          
 
         },
             },
@@ -94,6 +100,17 @@
   async created(){
     this.exercises=await API.getAllExercises();
   },
+    mounted() {
+    const interval = setInterval(() => {
+      if (this.$refs.input) {
+        console.log(this.$refs.input[0].$el.childNodes[0].childNodes[3].childNodes[0].childNodes[0].childNodes[0].classList[4]);
+        // VueComponent{}
+        //console.log(this.$refs);
+        // {nav: VueComponent}
+        clearInterval(interval);
+      }
+    }, 50)
+  }
   
   }
 </script>
