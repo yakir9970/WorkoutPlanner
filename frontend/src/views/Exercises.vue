@@ -1,7 +1,7 @@
 <template>
  <div class="Exercises">
-  <h1 class="text-h3 primary--text">My Exercises</h1>
-  <v-container fluid class="my-5">
+  <!-- <h1 class="text-h3 primary--text">My Exercises</h1> -->
+  <v-container fluid class="my-5 pt-10">
     <div class="test">
       <v-tooltip top>
         <template v-slot:activator="{ on, attrs }">
@@ -57,7 +57,7 @@
       </v-list-group>
     </v-list>
    
-    <v-card elevation="10" max-width="1600" class="secondary pa-7 my-12 ml-15" v-for="(exercise,index) in exercises" :key="exercise._id" ref="input">
+    <v-card elevation="10" max-width="1600" class="secondary pa-7 mb-12 mt-16 ml-15" v-for="(exercise,index) in exercises" :key="exercise._id" ref="input">
       <v-row :class="`pb-3 mr-n10 workout`">
           <v-col cols="12" md="3">
             <div class="primary--text ">Exercise Name</div>
@@ -222,6 +222,10 @@
   left: 20px;
   top: 200px;
   width: 230px;
+}
+.Exercises{
+  margin-top: -20px;
+  margin-left: 0px;
 }
 
 

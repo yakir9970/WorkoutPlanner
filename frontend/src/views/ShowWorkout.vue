@@ -87,4 +87,7 @@
         .v-divider {
           border-width: 2px;
         }
+        .ShowWorkouts{
+          padding-top: 70px;
+        }
         </style>

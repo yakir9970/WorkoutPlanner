@@ -1,20 +1,18 @@
         <template>
         <div class="MyWorkouts">
-        <h1 class="text-h3 primary--text font-weight-bold">Workout No. {{this.$route.params.index+1}}</h1>
+        <h1 class="text-h3 primary--text font-weight-bold ml-10 mt-5">Workout No. {{this.workoutNum}}</h1>
         <div class="test">  
             <v-btn  class="primary" :to="{name:'Exercises', params:{currentWorkout:workout.exercises, workoutObj:workout}}">Add Exercises</v-btn>   
-            <v-btn class="transparent" depressed >
-                <v-icon x-large class="primary--text">mdi-pencil</v-icon>
-            </v-btn>
         </div>
         
         <v-container class="my-5">
             <v-row >
                 <v-card width="700" class="secondary mt-10" elevation="10" >
                     <v-col cols="12" v-for="(exercise,index) in workout.exercises" :key="exercise._id">
-                        <v-btn absolute right depressed class="transparent white--text" :to="{name: 'Workout', params: {id:workout._id, index:index}}">
+                        <!-- <v-btn absolute right depressed class="transparent white--text" :to="{name: 'Workout', params: {id:workout._id, index:index}}">
                             <v-icon x-large class="mt-8 mr-10 primary--text">mdi-pencil</v-icon>
-                        </v-btn>
+                        </v-btn> -->
+                        <EditEinW :exercise="exercise" :workout="workout"/> 
                         <v-btn absolute right depressed class="transparent white--text" @click="deleteExerciseFromWorkout(exercise)">
                             <v-icon x-large class="mt-8 mr-n7 primary--text">mdi-delete</v-icon>
                         </v-btn>
@@ -38,11 +36,14 @@
 
         <script>
         import API from "../api"
+         import EditEinW from "../components/EditEinW.vue"
 
         export default {
+            components: {EditEinW},
             data(){
             return {
                 workout: {},
+                workoutNum:null,
             }
             },
              methods:{
@@ -63,7 +64,8 @@
                 }
             },
             async created(){
-            this.workout = await API.getWorkoutByID(this.$route.params.id)
+            this.workout = await API.getWorkoutByID(this.$route.params.id);
+            this.workoutNum=this.$route.params.index+1;
             }
         }
         </script>
@@ -80,5 +82,8 @@
          .test {
             position: fixed;
             right: 400px;
+        }
+        .MyWorkouts{
+            padding-top: 60px;
         }
         </style>

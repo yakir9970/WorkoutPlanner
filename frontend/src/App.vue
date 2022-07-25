@@ -1,8 +1,8 @@
-<template>
+<template >
   <v-app >
    <Navbar />
     <v-main class="success">
-      <router-view class="mx-10 mt-4">
+      <router-view class="main">
         
       </router-view>
     </v-main>
@@ -20,3 +20,13 @@ export default {
   }),
 };
 </script>
+
+<style>
+.main{
+  background-color: #effeff;
+  margin-top: -50px;
+  margin-left: -200px;
+  padding-left: 200px;
+  min-width: 100%;
+}
+</style>
