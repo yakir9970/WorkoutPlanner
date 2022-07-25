@@ -15,6 +15,15 @@
                             <p class="primary--text text-h6 font-weight-bold">Primary Muscles: {{exercise.primary}}</p>
                             <p class="primary--text text-h6 font-weight-bold">Secondary Muscles: {{exercise.secondary.join(",")}}</p>
                         </v-card-text>
+                        <v-form class="ml-5" v-model="valid">
+                            <v-row>
+                              <v-col cols="12" md="8">
+                                <p class="primary--text text-body-1 mb-n2 font-weight-light text-decoration-underline">Please Add The Following:</p>
+                                <v-text-field v-model="workout[index].reps" :rules="rules" label="Number Of Reps" required></v-text-field>
+                                <v-text-field v-model="workout[index].load" :rules="rules" label="Load(kg)" required></v-text-field>
+                              </v-col>
+                            </v-row>
+                        </v-form>
                     </v-col>
                 </v-card>        
             </v-row>  
@@ -29,14 +38,31 @@
             data(){
             return {
                 workout: [],
+                workoutObj:{},
+                valid:false,
+                rules: [
+                  v=> !!v || "This Field Is Required!",
+                  v => Number.isInteger(Number(v)) || "The Input Must Be A Number",
+                  v=> v>0||"The Input Must Be A Positive Number"
+                ]
             }
             },
              methods:{
                 async addWorkout(){
-                const response = await API.addWorkout(this.workout);
-                console.log(response);
-                this.$router.push({ name: "MyWorkouts", params: {message: response.message} })
+                  if(this.workoutObj._id!=null){
+                    this.updateWorkout();
+                  }
+                  else{
+                    const response = await API.addWorkout(this.workout);
+                    console.log(response);
+                    this.$router.push({ name: "MyWorkouts", params: {message: response.message} })                    
+                  }
+
               },
+               async updateWorkout(){
+                    const response = await API.updateWorkout(this.workoutObj._id,this.workoutObj);
+                    this.$router.push({ name: "MyWorkouts", params: {message: response.message} });
+                },
             },
             computed: {
               disable : ({ workout }) => workout.length === 0
@@ -44,6 +70,8 @@
             
             async created(){
             this.workout = this.$route.params.currentWorkout;
+            this.workoutObj=this.$route.params.workoutObj;
+            console.log(this.workoutObj);
             }
         }
         </script>

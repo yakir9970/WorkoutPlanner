@@ -5,7 +5,7 @@
     <div class="test">
       <v-tooltip top>
         <template v-slot:activator="{ on, attrs }">
-        <v-btn icon :disabled="disable" :to="{name: 'ShowWorkout', params: {currentWorkout: currentWorkout}}" v-bind="attrs" v-on="on" class="transparent mr-5" depressed>
+        <v-btn icon :disabled="disable" :to="{name: 'ShowWorkout', params: {currentWorkout: currentWorkout, workoutObj}}" v-bind="attrs" v-on="on" class="transparent mr-5" depressed>
           <v-icon size="50" class="primary--text">mdi-archive-eye-outline</v-icon>
           <h1 :class="changeColor(disable)">({{currentWorkout.length}})</h1>
         </v-btn>
@@ -15,7 +15,8 @@
         <Popup />
     </div>
     <div class="sort">
-      <v-menu :open-on-hover="true" offset-y rounded="lg" transition="slide-y-transition">
+      <!-- NOT WORKING, CHANGING ORDER AFFECTS + SIGNS -->
+      <!-- <v-menu offset-y rounded="lg" transition="slide-y-transition">
         <template v-slot:activator="{ on, attrs }">
         <v-btn color="transparent primary--text font-weight-bold" depressed v-bind="attrs" v-on="on">
           <v-icon left>
@@ -27,36 +28,35 @@
           <v-list-item @click="sortBy('name')" class="primary--text font-weight-bold">Exercise Name</v-list-item>
           <v-list-item @click="sortBy('primary')" class="primary--text font-weight-bold">Primary Muscle</v-list-item>
         </v-list>
-      </v-menu>
-      <v-menu :close-on-content-click="false" :open-on-hover="true" offset-y rounded="lg" transition="slide-y-transition">
-        <template v-slot:activator="{ on, attrs }">
-        <v-btn color="transparent primary--text font-weight-bold" depressed v-bind="attrs" v-on="on">
-          <v-icon left>
-            mdi-filter
-          </v-icon>  
-        Filter By</v-btn>
-      </template>
-        <v-list>
-          <v-menu :open-on-hover="true" offset-x rounded="lg" transition="slide-x-transition">
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn class="menu-primary" color="transparent primary--text font-weight-bold text-body-1" depressed v-bind="attrs" v-on="on">
-                Primary Muscle
-                 <v-icon right>
-                  mdi-menu-right
-                </v-icon>
-                </v-btn>
-            </template>
-            <v-list>
-              <v-list-item :filter="filterExercises" @click="filterBy('Biceps')">Biceps</v-list-item>
-              <v-list-item :filter="filterExercises" @click="filterBy('Triceps')">Triceps</v-list-item>
-              <v-list-item :filter="filterExercises" @click="filterBy('Upper Back')">Upper Back</v-list-item>
-              <v-list-item :filter="filterExercises" @click="filterBy('Upper Chest')">Upper Chest</v-list-item>
-            </v-list>
-          </v-menu>
-          <v-list-item>Secondary Muscles</v-list-item>
-        </v-list>
-      </v-menu>
+      </v-menu> -->
+      
+      <!-- <div  v-for="muscle in filters" :key="muscle">
+        <v-chip v-if="chip" small color="primary font-weight-bold" outlined  close @click:close="filterBy(muscle)">{{muscle}}</v-chip>
+      </div> -->
+      
     </div>
+    
+     <v-list disabled color="success" class="filter">
+      <v-list-group no-action>
+        <template v-slot:activator>
+          <v-list-item-content>
+            <v-list-item-title class="primary--text">[PROBLEM!]Filter By Muscle</v-list-item-title>
+          </v-list-item-content>
+        </template>
+
+        <v-list-item :filter="filterExercises" class="ml-n10" v-for="child in muscles" :key="child">
+           <template v-slot:default="{ active }">
+            <v-list-item-action @click="filterBy(child)">
+              <v-checkbox  :input-value="active"></v-checkbox>
+            </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title class="primary--text" v-text="child"></v-list-item-title>
+          </v-list-item-content>
+           </template>
+        </v-list-item>
+      </v-list-group>
+    </v-list>
+   
     <v-card elevation="10" max-width="1600" class="secondary pa-7 my-12 ml-15" v-for="(exercise,index) in exercises" :key="exercise._id" ref="input">
       <v-row :class="`pb-3 mr-n10 workout`">
           <v-col cols="12" md="3">
@@ -110,6 +110,11 @@
         currentWorkout: [],
         event: "",
         temp: [],
+        filters: [],
+        workoutObj: {},
+        //primaryFilter:"",
+        //chip:false,
+        muscles:["Biceps","Triceps","Upper Back","Upper Chest"],
       }
     },
     methods: {   
@@ -122,15 +127,25 @@
         }
       }, 
       sortBy(prop){
-          this.exercises.sort((a,b)=> a[prop].toLowerCase() < b[prop].toLowerCase() ? -1:1)
+          this.exercises.sort((a,b)=> a[prop].toLowerCase() < b[prop].toLowerCase() ? -1:1);
+          console.log(this.$refs.input);
       },
       filterBy(event){
-        if(this.event==event){
+        if(this.filters.length==0&&this.event!=""){
           this.event="";
+          //this.chip=false;
+          //this.filters=this.filters.filter(e=>e!==event);
         }
         else{
           this.event=event;
+          //this.chip=true;
+           if(!this.filters.includes(event))
+             this.filters.push(this.event);
+             else{
+              this.filters.filter(e=>e!==this.event);
+             }
         }
+        this.primaryFilter=this.event;
       },
       async deleteExercise(id){
             const response = await API.deleteExercise(id)
@@ -157,7 +172,7 @@
       filterExercises(){
         this.exercises=this.temp;
         if(this.event!=""&&this.event.toLowerCase()!='all'){
-          this.exercises= this.exercises.filter(({primary})=>primary.toLowerCase()==this.event.toLowerCase());
+          this.exercises= this.exercises.filter(r=>r.secondary.includes(this.event)||r.primary==this.event);
         }
         else{
           this.exercises=this.temp;
@@ -165,6 +180,10 @@
       },
     },
   async created(){
+    if(this.$route.params.currentWorkout!=null){
+      this.currentWorkout=this.$route.params.currentWorkout;
+      this.workoutObj=this.$route.params.workoutObj;
+    }
     this.exercises=await API.getAllExercises();
     if(this.temp.length==0){
       this.temp=this.exercises;
@@ -190,13 +209,19 @@
   right: 400px;
 }
 .sort {
-  position: relative;
+  position: fixed;
   margin-top: 30px;
   margin-bottom: -45px;
   left: 100px;
 }
 .menu-primary {
   text-transform: capitalize;
+}
+.filter {
+  position: fixed;
+  left: 20px;
+  top: 200px;
+  width: 230px;
 }
 
 

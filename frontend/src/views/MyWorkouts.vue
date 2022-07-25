@@ -19,6 +19,9 @@
                 <v-card-text>
                   <p class="primary--text text-body-1 font-weight-bold">Primary Muscles: {{exercise.primary}}</p>
                   <p class="primary--text text-body-1 font-weight-bold">Secondary Muscles: {{exercise.secondary.join(",")}}</p>
+                  <p class="primary--text text-body-1 font-weight-bold">Reps: {{exercise.reps}}</p>
+                  <p class="primary--text text-body-1 font-weight-bold">Load (kg): {{exercise.load}}</p>
+
                 </v-card-text>
                 </v-card>        
               </v-col>

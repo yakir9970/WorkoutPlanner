@@ -30,7 +30,7 @@ const getWorkout = async (req,res)=>{
 // POST new workout
 const createWorkout = async (req,res)=>{
     const exercises = req.body;
-    
+    console.log(exercises);
     //add doc to DB
     try {
         const workout = await Workout.create({exercises});
